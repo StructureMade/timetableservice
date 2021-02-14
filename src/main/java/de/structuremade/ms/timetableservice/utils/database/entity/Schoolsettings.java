@@ -24,4 +24,8 @@ public class Schoolsettings {
 
     @Column
     private Date dateOfEnd;
+
+    @OneToOne(targetEntity = School.class)
+    @JoinColumn(name = "school", foreignKey = @ForeignKey(name = "fk_school"))
+    private School school;
 }

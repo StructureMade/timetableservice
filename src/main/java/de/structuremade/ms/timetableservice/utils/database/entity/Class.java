@@ -29,13 +29,13 @@ public class Class {
     @JoinColumn(name = "school", foreignKey = @ForeignKey(name = "fk_school"))
     private School school;
 
-    @OneToMany(targetEntity = User.class)
-    @JoinColumn(name = "class")
-    private List<User> students;
-
     @ManyToMany(targetEntity = LessonRoles.class)
     @JoinTable(name = "classlessons",schema = "services", joinColumns = @JoinColumn(name = "class", foreignKey = @ForeignKey(name = "fk_class"))
             , inverseJoinColumns = @JoinColumn(name = "lessonrole", foreignKey = @ForeignKey(name = "fk_lessonrole")))
     private List<LessonRoles> lessonRoles;
+
+    @OneToMany(targetEntity = User.class)
+    @JoinColumn(name = "class")
+    private List<User> students;
 
 }

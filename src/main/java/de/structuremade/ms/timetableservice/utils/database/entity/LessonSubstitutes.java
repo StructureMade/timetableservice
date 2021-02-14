@@ -7,7 +7,9 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "lessonsubstitutes", schema = "services", indexes = {
@@ -27,10 +29,10 @@ public class LessonSubstitutes {
     private String substituteRoom;
 
     @Column(name = "dateofsubstitute")
-    private Date DateOfSubstitute;
+    private Date date;
 
-    @ManyToOne(targetEntity =User.class)
-    @JoinColumn(name = "substituteTeacher", foreignKey = @ForeignKey(name = "fk_substituteTeacher"))
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "substitute_teacher", foreignKey = @ForeignKey(name = "fk_substituteTeacher"))
     private User substituteTeacher;
 
     @ManyToOne(targetEntity = Lessons.class)

@@ -28,17 +28,13 @@ public class School {
     @Column
     private String email;
 
-    @OneToMany(targetEntity = Role.class, orphanRemoval = true)
+    @OneToMany(targetEntity = LessonSubstitutes.class, orphanRemoval = true)
     @JoinColumn(name = "school", foreignKey = @ForeignKey(name = "fk_school"))
-    private List<Role> roles = new ArrayList<>();
+    private List<LessonSubstitutes> lessons = new ArrayList<>();
 
-    @OneToMany(targetEntity = de.structuremade.ms.initializer.database.entity.LessonSubstitutes.class, orphanRemoval = true)
+    @OneToMany(targetEntity = TimeTableTimes.class, orphanRemoval = true)
     @JoinColumn(name = "school", foreignKey = @ForeignKey(name = "fk_school"))
-    private List<de.structuremade.ms.initializer.database.entity.LessonSubstitutes> lessons = new ArrayList<>();
-
-    @OneToMany(targetEntity = de.structuremade.ms.initializer.database.entity.TimeTableTimes.class, orphanRemoval = true)
-    @JoinColumn(name = "school", foreignKey = @ForeignKey(name = "fk_school"))
-    private List<de.structuremade.ms.initializer.database.entity.TimeTableTimes> times = new ArrayList<>();
+    private List<TimeTableTimes> times = new ArrayList<>();
 
     @OneToMany(targetEntity = Holidays.class)
     @JoinColumn(name = "school")

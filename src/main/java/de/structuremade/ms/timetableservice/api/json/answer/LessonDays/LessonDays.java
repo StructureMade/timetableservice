@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -33,6 +34,7 @@ public class LessonDays {
         this.substituteTeacher = substituteTeacher.getAbbreviation();
         this.substituteRoom = lessonSubstitutes.getSubstituteRoom();
         this.settings = settings;
+        this.times = new ArrayList<>();
         this.times.addAll(times);
 
 

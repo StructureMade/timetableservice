@@ -32,11 +32,7 @@ public class Lessons {
     @JoinColumn(name = "settings", foreignKey = @ForeignKey(name = "fk_lessonsettings"))
     private Lessonsettings settings;
 
-    @ManyToOne
-    @JoinColumn(name = "school", foreignKey = @ForeignKey(name = "fk_school"))
-    private School school;
-
-    @ManyToOne
+    @ManyToOne(targetEntity = LessonRoles.class)
     @JoinColumn(name = "lessonrole", foreignKey = @ForeignKey(name = "fk_lessonrole"))
     private LessonRoles lessonRoles;
 
@@ -48,10 +44,5 @@ public class Lessons {
     @OneToMany(targetEntity = LessonSubstitutes.class)
     @JoinColumn(name = "lesson")
     private List<LessonSubstitutes> lesson;
-
-    @OneToMany(targetEntity = LessonSubstitutes.class)
-    @JoinColumn(name = "lesson")
-    private List<LessonSubstitutes> substitutes;
-
 
 }
