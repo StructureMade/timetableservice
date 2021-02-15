@@ -1,6 +1,5 @@
-package de.structuremade.ms.timetableservice.api.json.answer.LessonDays;
+package de.structuremade.ms.timetableservice.api.json.answer.Arrays;
 
-import de.structuremade.ms.timetableservice.utils.database.entity.LessonSubstitutes;
 import de.structuremade.ms.timetableservice.utils.database.entity.Lessons;
 import de.structuremade.ms.timetableservice.utils.database.entity.User;
 import lombok.Getter;
@@ -20,19 +19,15 @@ public class LessonDays {
     private String teacher;
     private String room;
     private int settings;
-    private String substituteTeacher;
-    private String substituteRoom;
     private List<String> times;
 
 
-    public LessonDays(Lessons lesson, LessonSubstitutes lessonSubstitutes, String name, User teacher, User substituteTeacher, List<String> times, int settings) {
+    public LessonDays(Lessons lesson, String name, User teacher, List<String> times, int settings) {
         this.id = lesson.getId();
         this.name = name;
         this.state = lesson.getState();
         this.room = lesson.getRoom();
         this.teacher = teacher.getAbbreviation();
-        this.substituteTeacher = substituteTeacher.getAbbreviation();
-        this.substituteRoom = lessonSubstitutes.getSubstituteRoom();
         this.settings = settings;
         this.times = new ArrayList<>();
         this.times.addAll(times);

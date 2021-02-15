@@ -1,4 +1,4 @@
-package de.structuremade.ms.timetableservice.api.json.answer.LessonDays;
+package de.structuremade.ms.timetableservice.api.json.answer.Arrays;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

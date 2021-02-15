@@ -8,6 +8,7 @@ class TimetableserviceApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }

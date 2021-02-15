@@ -1,7 +1,8 @@
 package de.structuremade.ms.timetableservice.api.json.answer;
 
-import de.structuremade.ms.timetableservice.api.json.answer.LessonDays.LessonDays;
-import de.structuremade.ms.timetableservice.api.json.answer.LessonDays.Times;
+import de.structuremade.ms.timetableservice.api.json.answer.Arrays.Holidays;
+import de.structuremade.ms.timetableservice.api.json.answer.Arrays.LessonDays;
+import de.structuremade.ms.timetableservice.api.json.answer.Arrays.Times;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,17 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetMyLessonsJson {
-    private boolean holidays;
     private List<Times> times;
     private List<LessonDays> monday;
     private List<LessonDays> tuesday;
     private List<LessonDays> wednesday;
     private List<LessonDays> thursday;
     private List<LessonDays> friday;
-
-    public GetMyLessonsJson(boolean holidays){
-        this.holidays = holidays;
-    }
+    private List<Holidays> holidays;
 
     public GetMyLessonsJson(LessonDays o){
         this.monday = new ArrayList<>();
