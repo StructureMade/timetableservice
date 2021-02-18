@@ -30,9 +30,9 @@ public class LessonRoles {
     private School school;
 
     @ManyToMany(targetEntity = Class.class)
-    @JoinTable(name = "classlessons", schema = "services", joinColumns = @JoinColumn(name = "class", foreignKey = @ForeignKey(name = "fk_class"))
-            , inverseJoinColumns = @JoinColumn(name = "lessonrole", foreignKey = @ForeignKey(name = "fk_lessonrole")))
-    private List<Class> classOfLesson;
+    @JoinTable(name = "classlessons",schema = "services", joinColumns = @JoinColumn(name = "lessonrole", foreignKey = @ForeignKey(name = "fk_lessonrole"))
+            , inverseJoinColumns = @JoinColumn(name = "class", foreignKey = @ForeignKey(name = "fk_class")))
+    private List<Class> classes;
 
     @OneToMany(targetEntity = Lessons.class)
     @JoinColumn(name = "lessonrole")

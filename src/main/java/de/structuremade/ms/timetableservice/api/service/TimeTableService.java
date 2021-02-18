@@ -2,9 +2,9 @@ package de.structuremade.ms.timetableservice.api.service;
 
 import de.structuremade.ms.timetableservice.api.json.GetLessonJson;
 import de.structuremade.ms.timetableservice.api.json.answer.Arrays.Holidays;
-import de.structuremade.ms.timetableservice.api.json.answer.GetMyLessonsJson;
 import de.structuremade.ms.timetableservice.api.json.answer.Arrays.LessonDays;
 import de.structuremade.ms.timetableservice.api.json.answer.Arrays.Times;
+import de.structuremade.ms.timetableservice.api.json.answer.GetMyLessonsJson;
 import de.structuremade.ms.timetableservice.utils.JWTUtil;
 import de.structuremade.ms.timetableservice.utils.database.entity.Class;
 import de.structuremade.ms.timetableservice.utils.database.entity.*;
@@ -106,17 +106,18 @@ public class TimeTableService {
             LOGGER.info("Create Timetable");
             userClass = user.getUserClass();
             lrList = user.getLessonRoles();
-            if (userClass != null && userClass.getLessonRoles() != null) lrList.addAll(userClass.getLessonRoles());
+            LOGGER.info(userClass.getId());
+            LOGGER.info(String.valueOf(userClass.getLessons().size()));
             for (LessonRoles lrole : lrList) {
                 for (Lessons lesson : lrole.getLessons()) {
                     //boolean substitute = false;
-                    LOGGER.info("Check if Lesson is in this week");
+                    //LOGGER.info("Check if Lesson is in this week");
                     //if (this.isLessonInThisWeek(lessonJson.getDate(), school, lesson.getSettings())) {
-                        LOGGER.info("Get times of Lesson");
-                        for (TimeTableTimes ttt : lesson.getTimes()) {
-                            timeIds.add(ttt.getId());
-                        }
-                        LOGGER.info("Check for substitute");
+                    LOGGER.info("Get times of Lesson");
+                    for (TimeTableTimes ttt : lesson.getTimes()) {
+                        timeIds.add(ttt.getId());
+                    }
+                    //LOGGER.info("Check for substitute");
 //                        for (LessonSubstitutes lessonSubstitutes : lessonSubstitutesList) {
 //                            if (lessonSubstitutes.getLesson().getId().equals(lesson.getId())) {
 //                                LOGGER.info("Lesson have substitute");
@@ -128,8 +129,8 @@ public class TimeTableService {
 //                        }
                     //}
                     //if (!substitute) {
-                        lessonsJsonArray = new LessonDays(lesson, lrole.getName(), lrole.getTeacher(), timeIds, lesson.getSettings().getId());
-                        timeIds.clear();
+                    lessonsJsonArray = new LessonDays(lesson, lrole.getName(), lrole.getTeacher(), timeIds, lesson.getSettings().getId());
+                    timeIds.clear();
                     //}
                     LOGGER.info("Add Entity to List");
                     switch (lesson.getDay().toLowerCase()) {
@@ -141,7 +142,26 @@ public class TimeTableService {
                     }
                 }
             }
-            //Auslagern in eigene Anfrage, damit man es Lokal speichern kann(KOMMENTAR SETZEN WENN ICH WEIß WAS ICH IDIOT DA MEINTE)
+            if (userClass != null && userClass.getLessons().size() > 0) {
+                for (LessonRoles lr : userClass.getLessons()) {
+                    for (Lessons lesson : lr.getLessons()) {
+                        LOGGER.info("Get times of Lesson");
+                        for (TimeTableTimes ttt : lesson.getTimes()) {
+                            timeIds.add(ttt.getId());
+                        }
+                        lessonsJsonArray = new LessonDays(lesson, lr.getName(), lr.getTeacher(), timeIds, lesson.getSettings().getId());
+                        timeIds.clear();
+                        LOGGER.info("Add Entity to List");
+                        switch (lesson.getDay().toLowerCase()) {
+                            case "monday" -> monday.add(lessonsJsonArray);
+                            case "tuesday" -> tuesday.add(lessonsJsonArray);
+                            case "wednesday" -> wednesday.add(lessonsJsonArray);
+                            case "thursday" -> thursday.add(lessonsJsonArray);
+                            case "friday" -> friday.add(lessonsJsonArray);
+                        }
+                    }
+                }
+            }
             LOGGER.info("Get Times of Timetable ");
             for (TimeTableTimes ttt : timeRepo.findAllBySchool(school)) {
                 Date start = new Date(ttt.getStarttime().getTime());
@@ -174,46 +194,46 @@ public class TimeTableService {
     //}
 
 
-   // @Transactional
-   // protected boolean isLessonInThisWeek(String date, School school, Lessonsettings settings) {
-   //     String[] splitDate = date.split("\\.");
-   //     Calendar c = Calendar.getInstance();
-   //     c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
-   //     c.set(Calendar.MONTH, Integer.parseInt(splitDate[1]) - 1);
-   //     c.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
-   //     int cw = c.get(Calendar.WEEK_OF_YEAR);
-   //     Schoolsettings ss = schoolSettingsRepo.findBySchool(school);
-   //     DateTime currentDate = new DateTime(c.getTime());
-   //     DateTime start = new DateTime(ss.getDateOfBegin());
-   //     DateTime end = new DateTime(ss.getDateOfEnd());
-   //     int halfYearWeeks = Weeks.weeksBetween(start, end).getWeeks() / 2;
-   //     switch (settings.getId()) {
-   //         case 0:
-   //             //Every Week
-   //             return true;
-   //         case 1:
-   //             //Gerade Woche
-   //             return cw % 2 == 0;
-   //         case 2:
-   //             //Ungerade Woche
-   //             return cw % 2 != 0;
-   //         case 3:
-   //             //Erstes Halbjahr
-   //             int week = Weeks.weeksBetween(start, currentDate).getWeeks();
-   //             return week < halfYearWeeks;
-   //         case 4:
-   //             //Zweites Halbjahr
-   //             int week1 = Weeks.weeksBetween(start, currentDate).getWeeks();
-   //             return week1 > halfYearWeeks;
-   //         case 5:
-   //             //Ersten 2 Wochen
-   //             return 2 >= c.get(Calendar.WEEK_OF_MONTH);
-   //         case 6:
-   //             //Letzten 2 Wochen
-   //             return 2 <= c.get(Calendar.WEEK_OF_MONTH);
-   //         default:
-   //             return false;
-   //     }
-   // }
+    // @Transactional
+    // protected boolean isLessonInThisWeek(String date, School school, Lessonsettings settings) {
+    //     String[] splitDate = date.split("\\.");
+    //     Calendar c = Calendar.getInstance();
+    //     c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
+    //     c.set(Calendar.MONTH, Integer.parseInt(splitDate[1]) - 1);
+    //     c.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
+    //     int cw = c.get(Calendar.WEEK_OF_YEAR);
+    //     Schoolsettings ss = schoolSettingsRepo.findBySchool(school);
+    //     DateTime currentDate = new DateTime(c.getTime());
+    //     DateTime start = new DateTime(ss.getDateOfBegin());
+    //     DateTime end = new DateTime(ss.getDateOfEnd());
+    //     int halfYearWeeks = Weeks.weeksBetween(start, end).getWeeks() / 2;
+    //     switch (settings.getId()) {
+    //         case 0:
+    //             //Every Week
+    //             return true;
+    //         case 1:
+    //             //Gerade Woche
+    //             return cw % 2 == 0;
+    //         case 2:
+    //             //Ungerade Woche
+    //             return cw % 2 != 0;
+    //         case 3:
+    //             //Erstes Halbjahr
+    //             int week = Weeks.weeksBetween(start, currentDate).getWeeks();
+    //             return week < halfYearWeeks;
+    //         case 4:
+    //             //Zweites Halbjahr
+    //             int week1 = Weeks.weeksBetween(start, currentDate).getWeeks();
+    //             return week1 > halfYearWeeks;
+    //         case 5:
+    //             //Ersten 2 Wochen
+    //             return 2 >= c.get(Calendar.WEEK_OF_MONTH);
+    //         case 6:
+    //             //Letzten 2 Wochen
+    //             return 2 <= c.get(Calendar.WEEK_OF_MONTH);
+    //         default:
+    //             return false;
+    //     }
+    // }
 //
 }

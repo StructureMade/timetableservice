@@ -12,8 +12,8 @@ spring:
       maximum-pool-size: 4
       max-lifetime: 1800000
   jpa:
-    show-sql: on
-    generate-ddl: on
+    show-sql: off
+    generate-ddl: off
     hibernate:
       ddl-auto: validate
     properties:
